@@ -134,60 +134,6 @@ public final class AffineTransformMatrix2D extends AbstractAffineTransformMatrix
         return Vector2D.of(resultX, resultY);
     }
 
-    /**
-     * Transforms the given x-coordinate, assuming that y has no influence on the
-     * outcome.
-     *
-     * @param x the value to transform
-     * @return the transformed value
-     * @throws IllegalStateException if the value of x is not independent of y
-     */
-    public double transformX(final double x) throws IllegalStateException {
-        if (m01 != 0.0) {
-            throw new IllegalStateException(
-                    "maxtrix contains y-shear value, you need to call the two argument variant of this function");
-        }
-        return m00 * x + m02;
-    }
-
-    /**
-     * Transform the given x-coordinate taking the given y value into account.
-     *
-     * @param x the value to transform
-     * @param y the dependent y value
-     * @return the transformed value
-     */
-    public double transformX(final double x, double y) {
-        return LinearCombination.value(m00, x, m01, y) + m02;
-    }
-
-    /**
-     * Transforms the given y-coordinate, assuming that y has no influence on the
-     * outcome.
-     *
-     * @param y the value to transform
-     * @return the transformed value
-     * @throws IllegalStateException if the value of y is not independent of x
-     */
-    public double transformY(double y) throws IllegalStateException {
-        if (m10 != 0.0) {
-            throw new IllegalStateException(
-                    "maxtrix contains x-shear value, you need to call the two argument variant of this function");
-        }
-        return m11 * y + m12;
-    }
-
-    /**
-     * Transform the given y-coordinate taking the given x value into account.
-     *
-     * @param x the dependent x value
-     * @param y the value to transform
-     * @return the transformed value
-     */
-    public double transformY(final double x, double y) {
-
-        return LinearCombination.value(m10, x, m11, y) + m12;
-    }
 
     /** {@inheritDoc}
     *
@@ -206,6 +152,31 @@ public final class AffineTransformMatrix2D extends AbstractAffineTransformMatrix
     @Override
     public Vector2D applyVector(final Vector2D vec) {
         return applyVector(vec, Vector2D::of);
+    }
+
+    public double transformX(final double x) {
+        if (m01 != 0.0) {
+            throw new IllegalStateException(
+                    "maxtrix contains y-shear value, you need to call the two argument variant of this function");
+        }
+        return m00 * x + m02;
+    }
+
+    public double transformX(final double x, double y) {
+        return LinearCombination.value(m00, x, m01, y) + m02;
+    }
+
+    public double transformY(double y) {
+        if (m10 != 0.0) {
+            throw new IllegalStateException(
+                    "maxtrix contains x-shear value, you need to call the two argument variant of this function");
+        }
+        return m11 * y + m12;
+    }
+
+    public double transformY(final double x, double y) {
+
+        return LinearCombination.value(m10, x, m11, y) + m12;
     }
 
     /** {@inheritDoc}
